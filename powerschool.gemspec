@@ -11,15 +11,13 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "README"
   ]
+  s.add_dependency 'httparty'
+  s.add_dependency 'multi_json'
   s.files = [
     "Gemfile",
     "LICENSE",
     "README",
     "lib/powerschool.rb",
-    "lib/powerschool/base.rb",
-    "lib/powerschool/district.rb",
-    "lib/powerschool/school.rb",
-    "spec/spec_helper.rb",
     "powerschool.gemspec"
     ]
 end
