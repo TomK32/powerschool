@@ -13,13 +13,14 @@ class Powerschool
 
   def self.get(method, path)
     define_method(method) do |options = {}|
+      _path = path.dup
       options.each_pair do |key, value|
-        path.gsub!(/(:#{key}$|:#{key})([:\/-_])/, "#{value}\\2")
+        _path.gsub!(/(:#{key}$|:#{key})([:\/-_])/, "#{value}\\2")
       end
-      if parameter = path.match(/:(\w*)/)
-        raise "Missing parameter '%s' for '%s'" % [parameter[1], path]
+      if parameter = _path.match(/:(\w*)/)
+        raise "Missing parameter '%s' for '%s'" % [parameter[1], _path]
       end
-      return @client.class.get(path, @client.options.merge(options))
+      return @client.class.get(_path, @client.options.merge(options))
     end
   end
 
