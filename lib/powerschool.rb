@@ -23,6 +23,24 @@ class Powerschool
     end
   end
 
+  def all(resource, options = {}, &block)
+    _options = options.dup
+    _options[:query] ||= {}
+    page = 1
+    results = []
+    begin
+      _options[:query][:page] = page
+      response = self.send(resource, _options)
+      results = response.parsed_response
+      plural = results.keys.first
+      results = results[plural][plural.singularize] || []
+      results.each do |result|
+        block.call(result, response)
+      end
+      page += 1
+    end while results.any?
+  end
+
   # client is set up per district so it returns only one district
   # for urls with parameters
   get :district, '/district'
@@ -30,6 +48,7 @@ class Powerschool
   get :teachers, '/staff'
   get :students, '/student'
   get :sections, '/section'
+  get :school_teachers, '/school/:school_id/staff'
   get :school_sections, '/school/:school_id/section'
   get :school_students, '/school/:school_id/student'
 
