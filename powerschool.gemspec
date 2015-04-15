@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
     "LICENSE",
     "README",
     "lib/powerschool.rb",
+    "lib/powerschool/client.rb",
     "powerschool.gemspec"
     ]
 end
