@@ -47,10 +47,23 @@ class Powerschool
   get :schools, '/district/school'
   get :teachers, '/staff'
   get :students, '/student'
-  get :sections, '/section'
   get :school_teachers, '/school/:school_id/staff'
-  get :school_sections, '/school/:school_id/section'
   get :school_students, '/school/:school_id/student'
+  get :school_sections, '/school/:school_id/section'
+  get :school_courses, '/school/:school_id/course'
+  get :school_terms, '/school/:school_id/term'
+  get :section_enrollment, '/section/:section_id/section_enrollment'
 
   get :metadata, '/metadata'
+
+  def current_terms(options)
+    terms = []
+    today = Date.today.to_s(:db)
+    self.all(:school_terms, options) do |term, response|
+      if term['start_date'] <= today && term['end_date'] >= today
+        terms << term
+      end
+    end
+    return terms
+  end
 end
