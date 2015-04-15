@@ -8,6 +8,8 @@ class Powerschool
     base_uri 'https://partner5.powerschool.com/ws/v1/'
     AUTH_ENDPOINT = 'https://partner5.powerschool.com/oauth/access_token'
 
+    # debug_output $stdout
+
     def initialize(api_credentials)
       @api_credentials = api_credentials
       if (api_credentials['secret'].blank? || api_credentials['id'].blank?) && api_credentials['access_token'].blank?
