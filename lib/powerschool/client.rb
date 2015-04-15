@@ -15,7 +15,7 @@ class Powerschool
       if (api_credentials['secret'].blank? || api_credentials['id'].blank?) && api_credentials['access_token'].blank?
         raise 'Access token or api credentials are required'
       end
-      @options = {:headers => {'Accept' => 'json'}}
+      @options = {:headers => {'Accept' => 'application/json'}}
     end
 
     def options(other = {})
@@ -30,7 +30,7 @@ class Powerschool
       if ! @api_credentials['access_token']
         headers = {
           'ContentType' => 'application/x-www-form-urlencoded;charset=UTF-8',
-          'Accept' => 'json',
+          'Accept' => 'application/json',
           'Authorization' => 'Basic ' + Base64.encode64([self.api_credentials['id'], self.api_credentials['secret']].join(':')).gsub(/\n/, '') }
         response = HTTParty.post(AUTH_ENDPOINT, {headers: headers, body: 'grant_type=client_credentials'})
         @options[:headers] ||= {}
