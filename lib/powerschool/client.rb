@@ -2,7 +2,7 @@ class Powerschool
   class Client
     include HTTParty
 
-    VERSION = '0.1'
+    VERSION = '0.2'
     attr_accessor :api_credentials, :authenticated, :options
 
     base_uri 'https://partner5.powerschool.com/ws/v1/'
@@ -10,12 +10,12 @@ class Powerschool
 
     # debug_output $stdout
 
-    def initialize(api_credentials)
+    def initialize(api_credentials, options = {})
       @api_credentials = api_credentials
       if (api_credentials['secret'].blank? || api_credentials['id'].blank?) && api_credentials['access_token'].blank?
         raise 'Access token or api credentials are required'
       end
-      @options = {:headers => {'Accept' => 'application/json'}}
+      @options = {:headers => {'User-Agent' => "Ruby Powerschool #{VERSION}", 'Accept' => 'application/json'}}.merge(options)
     end
 
     def options(other = {})
