@@ -5,7 +5,7 @@ class Powerschool
     VERSION = '0.2'
     attr_accessor :api_credentials, :authenticated, :options
 
-    base_uri 'https://partner5.powerschool.com/ws/v1/'
+    base_uri 'https://partner5.powerschool.com'
     AUTH_ENDPOINT = 'https://partner5.powerschool.com/oauth/access_token'
 
     # debug_output $stdout

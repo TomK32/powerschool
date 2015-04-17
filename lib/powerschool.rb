@@ -7,26 +7,37 @@ require 'powerschool/client'
 class Powerschool
   attr_accessor :client
   attr_accessor :metadata
+  API_PATHS = {
+    ws: '/ws/v1',
+    ptg: '/powerschool-ptg-api/v2/'
+  }
 
   def initialize(api_credentials)
     @client = Client.new(api_credentials)
   end
 
   [:get, :post, :put, :delete].each do |command|
-    define_method(command) do |method, path|
+    define_method(command) do |method, api, path|
+      if path.nil?
+        path, api = api, nil
+      end
       define_method(method) do |options = {}|
-        return @client.class.send(command, prepare_path(path.dup, options), @client.options.merge(options))
+        return @client.class.send(command, prepare_path(path.dup, api, options), @client.options.merge(options))
       end
     end
   end
 
-  def prepare_path(path, options)
+  def prepare_path(path, api, options)
     options.each_pair do |key, value|
       path.gsub!(/(:#{key}$|:#{key})([:\/-_])/, "#{value}\\2")
     end
     if parameter = path.match(/:(\w*)/)
       raise "Missing parameter '%s' for '%s'" % [parameter[1], path]
     end
+    if api
+      path = (API_PATHS[api] + path).gsub('//', '/')
+    end
+    path
   end
 
   # retreive max_page_size from metadata. Defaults to 100
@@ -59,16 +70,19 @@ class Powerschool
 
   # client is set up per district so it returns only one district
   # for urls with parameters
-  get :district, '/district'
-  get :schools, '/district/school'
-  get :teachers, '/staff'
-  get :students, '/student'
-  get :school_teachers, '/school/:school_id/staff'
-  get :school_students, '/school/:school_id/student'
-  get :school_sections, '/school/:school_id/section'
-  get :school_courses, '/school/:school_id/course'
-  get :school_terms, '/school/:school_id/term'
-  get :section_enrollment, '/section/:section_id/section_enrollment'
+  get :district, :ws, '/district'
+  get :schools, :ws, '/district/school'
+  get :teachers, :ws, '/staff'
+  get :students, :ws, '/student'
+  get :school_teachers, :ws, '/school/:school_id/staff'
+  get :school_students, :ws, '/school/:school_id/student'
+  get :school_sections, :ws, '/school/:school_id/section'
+  get :school_courses, :ws, '/school/:school_id/course'
+  get :school_terms, :ws, '/school/:school_id/term'
+  get :section_enrollment, :ws, '/section/:section_id/section_enrollment'
+
+  post :assignment, :ptg, '/assignment'
+  post :assignment_score, :ptg, '/assignment/:assignment_id/'
 
   get :metadata, '/metadata'
 
