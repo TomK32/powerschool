@@ -12,17 +12,19 @@ class Powerschool
     ptg: '/powerschool-ptg-api/v2/'
   }
 
-  def initialize(api_credentials)
-    @client = Client.new(api_credentials)
-  end
 
-  [:get, :post, :put, :delete].each do |command|
-    define_method(command) do |method, api, path|
-      if path.nil?
-        path, api = api, nil
-      end
-      define_method(method) do |options = {}|
-        return @client.class.send(command, prepare_path(path.dup, api, options), @client.options.merge(options))
+  class << self
+    def initialize(api_credentials = nil)
+      @client = Client.new(api_credentials) if api_credentials
+    end
+    [:get, :post, :put, :delete].each do |command|
+      define_method(command.to_s) do |method, api, path = nil|
+        if path.nil?
+          path, api = api, nil
+        end
+        define_method(method) do |options = {}|
+          return @client.class.send(command, prepare_path(path.dup, api, options), @client.options.merge(options))
+        end
       end
     end
   end
@@ -67,6 +69,8 @@ class Powerschool
       page += 1
     end while results.any? && results.size == page_size
   end
+
+
 
   # client is set up per district so it returns only one district
   # for urls with parameters

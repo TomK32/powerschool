@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    powerschool (0.1)
+    powerschool (0.2)
       httparty
       multi_json
 
