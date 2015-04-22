@@ -41,6 +41,8 @@ class Powerschool
       if @api_credentials['access_token']
         @options[:headers].merge!('Authorization' => 'Bearer ' + @api_credentials['access_token'])
         @authenticated = true
+      else
+        raise "Could not authenticate: " + response.inspect
       end
       return @authenticated
     end

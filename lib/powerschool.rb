@@ -13,17 +13,17 @@ class Powerschool
   }
 
 
+  def initialize(api_credentials = nil)
+    self.client = Client.new(api_credentials) if api_credentials
+  end
   class << self
-    def initialize(api_credentials = nil)
-      @client = Client.new(api_credentials) if api_credentials
-    end
     [:get, :post, :put, :delete].each do |command|
       define_method(command.to_s) do |method, api, path = nil|
         if path.nil?
           path, api = api, nil
         end
         define_method(method) do |options = {}|
-          return @client.class.send(command, prepare_path(path.dup, api, options), @client.options.merge(options))
+          return self.client.class.send(command, prepare_path(path.dup, api, options), self.client.options.merge(options))
         end
       end
     end
@@ -50,7 +50,7 @@ class Powerschool
 
   # Process every object for a resource.
   def all(resource, options = {}, &block)
-    page_size = options[:query][:pagesize] || get_page_size(resource)
+    page_size = (options[:query][:pagesize] rescue nil) || get_page_size(resource)
     _options = options.dup
     _options[:query] ||= {}
     _options[:query][:pagesize] ||= page_size
@@ -60,7 +60,12 @@ class Powerschool
     begin
       _options[:query][:page] = page
       response = self.send(resource, _options)
-      results = response.parsed_response
+      results = response.parsed_response || {}
+      if !response.parsed_response
+        if response.headers['www-authenticate'].match(/Bearer error/)
+          raise response.headers['www-authenticate'].to_s
+        end
+      end
       plural = results.keys.first
       results = results[plural][plural.singularize] || []
       results.each do |result|
