@@ -1,6 +1,22 @@
 
 This ruby gem is for accessing the Pearson Powerschool API.
 
-(C) 2015 Thomas R. Koll for Naiku Inc. <tomk@naiku.net>
 
+Usage:
+
+Add to your Gemfile:
+
+  gem 'powerschool', git: 'git@github.com/tomk32/powerschool.git'
+
+
+As you might be on a different Powerschool Partner server, you can change the URL in your initializer:
+
+  Powerschool::Client.base_uri 'https://partner3.powerschool.com'
+
+TODO:
+
+* Get classy with HTTParty: http://rubyscale.com/blog/2012/09/24/being-classy-with-httparty/
+
+
+(C) 2015 Thomas R. Koll for Naiku Inc. <tomk@naiku.net>
 

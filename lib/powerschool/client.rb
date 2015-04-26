@@ -6,7 +6,7 @@ class Powerschool
     attr_accessor :api_credentials, :authenticated, :options
 
     base_uri 'https://partner3.powerschool.com'
-    AUTH_ENDPOINT = 'https://partner3.powerschool.com/oauth/access_token'
+    AUTH_ENDPOINT = '/oauth/access_token'
 
     # debug_output $stdout
 
@@ -32,7 +32,7 @@ class Powerschool
           'ContentType' => 'application/x-www-form-urlencoded;charset=UTF-8',
           'Accept' => 'application/json',
           'Authorization' => 'Basic ' + Base64.encode64([self.api_credentials['id'], self.api_credentials['secret']].join(':')).gsub(/\n/, '') }
-        response = HTTParty.post(AUTH_ENDPOINT, {headers: headers, body: 'grant_type=client_credentials'})
+        response = HTTParty.post(self.class.base_uri + AUTH_ENDPOINT, {headers: headers, body: 'grant_type=client_credentials'})
         @options[:headers] ||= {}
         if response.parsed_response && response.parsed_response['access_token']
           @api_credentials['access_token'] = response.parsed_response['access_token']
@@ -42,7 +42,7 @@ class Powerschool
         @options[:headers].merge!('Authorization' => 'Bearer ' + @api_credentials['access_token'])
         @authenticated = true
       else
-        raise "Could not authenticate: " + response.inspect
+        raise "Could not authenticate: %s -- headers: %s" % [response.inspect, headers]
       end
       return @authenticated
     end
