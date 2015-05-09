@@ -96,10 +96,15 @@ class Powerschool
   get :school_terms, :ws, '/school/:school_id/term'
   get :section_enrollment, :ws, '/section/:section_id/section_enrollment'
 
-  post :assignment, :ptg, '/assignment'
-  post :assignment_score, :ptg, '/assignment/:assignment_id/'
+  post :post_section_assignment, :ptg, '/section/:section_id/assignment'
+  post :post_assignment_score, :ptg, '/assignment/:assignment_id/'
 
-  get :metadata, '/metadata'
+  get :metadata, :ws, '/metadata'
+  get :areas, '/ws/schema/area'
+  get :tables, '/ws/schema/table'
+  get :table_metadata, '/ws/schema/table/:table/metadata'
+  get :area_table, '/ws/schema/area/:area/table'
+
 
   # Special method to filter terms and find the current ones
   def current_terms(options, today = nil)

@@ -15,7 +15,7 @@ class Powerschool
       if (api_credentials['secret'].blank? || api_credentials['id'].blank?) && api_credentials['access_token'].blank?
         raise 'Access token or api credentials are required'
       end
-      @options = {:headers => {'User-Agent' => "Ruby Powerschool #{VERSION}", 'Accept' => 'application/json'}}.merge(options)
+      @options = {:headers => {'User-Agent' => "Ruby Powerschool #{VERSION}", 'Accept' => 'application/json', 'Content-Type' => 'application/json'}}.merge(options)
     end
 
     def options(other = {})
