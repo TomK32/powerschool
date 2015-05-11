@@ -31,10 +31,17 @@ class Powerschool
 
   def prepare_path(path, api, options)
     options.each_pair do |key, value|
-      path.gsub!(/(:#{key}$|:#{key})([:\/-_])/, "#{value}\\2")
+      regexp_path_option = /(:#{key}$|:#{key})([:\/-_])/
+      if path.match(regexp_path_option)
+        if value.blank?
+          raise "Blank value for parameter '%s' in '%s'" % [key, path]
+        end
+        path.gsub!(regexp_path_option, "#{value}\\2")
+        options.delete(key)
+      end
     end
     if parameter = path.match(/:(\w*)/)
-      raise "Missing parameter '%s' for '%s'" % [parameter[1], path]
+      raise "Missing parameter '%s' in '%s'" % [parameter[1], path]
     end
     if api
       path = (API_PATHS[api] + path).gsub('//', '/')
