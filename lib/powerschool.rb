@@ -97,7 +97,8 @@ class Powerschool
   get :section_enrollment, :ws, '/section/:section_id/section_enrollment'
 
   post :post_section_assignment, :ptg, '/section/:section_id/assignment'
-  post :post_assignment_score, :ptg, '/assignment/:assignment_id/'
+  put :put_assignment_scores, :ptg, '/assignment/:assignment_id/score'
+  put :put_assignment_score, :ptg, '/assignment/:assignment_id/student/:student_id/score'
 
   get :metadata, :ws, '/metadata'
   get :areas, '/ws/schema/area'
