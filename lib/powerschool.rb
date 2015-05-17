@@ -103,6 +103,7 @@ class Powerschool
   get :school_terms, :ws, '/school/:school_id/term'
   get :section_enrollment, :ws, '/section/:section_id/section_enrollment'
 
+  get :assignment, :ptg, 'assignment/:id'
   post :post_section_assignment, :ptg, '/section/:section_id/assignment'
   put :put_assignment_scores, :ptg, '/assignment/:assignment_id/score'
   put :put_assignment_score, :ptg, '/assignment/:assignment_id/student/:student_id/score'
