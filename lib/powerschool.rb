@@ -31,7 +31,7 @@ class Powerschool
 
   def prepare_path(path, api, options)
     options.each_pair do |key, value|
-      regexp_path_option = /(:#{key}$|:#{key})([:\/-_])/
+      regexp_path_option = /(:#{key}$|:#{key}([:\/-_]))/
       if path.match(regexp_path_option)
         if value.blank?
           raise "Blank value for parameter '%s' in '%s'" % [key, path]
@@ -41,7 +41,7 @@ class Powerschool
       end
     end
     if parameter = path.match(/:(\w*)/)
-      raise "Missing parameter '%s' in '%s'" % [parameter[1], path]
+      raise "Missing parameter '%s' in '%s'. Parameters: %s" % [parameter[1], path, options]
     end
     if api
       path = (API_PATHS[api] + path).gsub('//', '/')
