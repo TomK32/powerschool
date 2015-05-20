@@ -30,6 +30,7 @@ class Powerschool
   end
 
   def prepare_path(path, api, options)
+    options = options.dup
     options.each_pair do |key, value|
       regexp_path_option = /(:#{key}$|:#{key}([:\/-_]))/
       if path.match(regexp_path_option)
