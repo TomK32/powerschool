@@ -13,9 +13,13 @@ class Powerschool
   }
 
 
-  def initialize(api_credentials = nil)
-    self.client = Client.new(api_credentials) if api_credentials
+  def initialize(api_credentials)
+    self.client = Class.new(Powerschool::Client) do |klass|
+      uri = api_credentials['base_uri'] || Powerschool::Client::BASE_URI
+      klass.base_uri(uri)
+    end.new(api_credentials)
   end
+
   class << self
     [:get, :post, :put, :delete].each do |command|
       define_method(command.to_s) do |method, api, path = nil|

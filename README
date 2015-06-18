@@ -8,15 +8,10 @@ Add to your Gemfile:
 
   gem 'powerschool', git: 'git@github.com/tomk32/powerschool.git'
 
+  powerschool = Powerschool.new({'base_uri' => 'http://powerschool.example.com', id => 'my id', secret => 'my secret'})
+  puts powerschool.district
 
-As you might be on a different Powerschool Partner server, you can change the URL in your initializer:
-
-  Powerschool::Client.base_uri 'https://partner3.powerschool.com'
-
-TODO:
-
-* Get classy with HTTParty: http://rubyscale.com/blog/2012/09/24/being-classy-with-httparty/
-
+For more routes see lib/powerschool.rb
 
 (C) 2015 Thomas R. Koll for Naiku Inc. <tomk@naiku.net>
 
