@@ -125,9 +125,14 @@ class Powerschool
     terms = []
     today ||= Date.today.to_s(:db)
     self.all(:school_terms, options) do |term, response|
-      if term['start_date'] <= today && term['end_date'] >= today
+      if term['end_date'] >= today
         terms << term
       end
+    end
+    # now filter again for the start date and if there isn't one matching we have to return the most recent one
+    active_terms = terms.select{|term| term['start_date'] <= today }
+    if active_terms.any?
+      return active_terms
     end
     return terms
   end

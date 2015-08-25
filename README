@@ -8,7 +8,7 @@ Add to your Gemfile:
 
   gem 'powerschool', git: 'git@github.com/tomk32/powerschool.git'
 
-  powerschool = Powerschool.new({'base_uri' => 'http://powerschool.example.com', id => 'my id', secret => 'my secret'})
+  powerschool = Powerschool.new({'base_uri' => 'http://powerschool.example.com', 'id' => 'my id', 'secret' => 'my secret'})
   puts powerschool.district
 
 For more routes see lib/powerschool.rb
