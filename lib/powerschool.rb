@@ -129,6 +129,16 @@ class Powerschool
         terms << term
       end
     end
+    if terms.empty?
+      offset = Date.today.month < 8 ? -1 : 0
+      year = self.client.api_credentials['start_year'] || (Date.today.year + offset)
+      options[:query] = {q: 'start_year==%s' % year}
+      self.all(:school_terms, options) do |term, response|
+        if term['end_date'] >= today
+          terms << term
+        end
+      end
+    end
     # now filter again for the start date and if there isn't one matching we have to return the most recent one
     active_terms = terms.select{|term| term['start_date'] <= today }
     if active_terms.any?
