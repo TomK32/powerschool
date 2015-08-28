@@ -120,6 +120,11 @@ class Powerschool
   get :area_table, '/ws/schema/area/:area/table'
 
 
+  def start_year
+    offset = Date.today.month < 8 ? -1 : 0
+    year = self.client.api_credentials['start_year'] || (Date.today.year + offset)
+  end
+
   # Special method to filter terms and find the current ones
   def current_terms(options, today = nil)
     terms = []
@@ -130,9 +135,7 @@ class Powerschool
       end
     end
     if terms.empty?
-      offset = Date.today.month < 8 ? -1 : 0
-      year = self.client.api_credentials['start_year'] || (Date.today.year + offset)
-      options[:query] = {q: 'start_year==%s' % year}
+      options[:query] = {q: 'start_year==%s' % start_year}
       self.all(:school_terms, options) do |term, response|
         if term['end_date'] >= today
           terms << term
