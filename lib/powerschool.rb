@@ -100,6 +100,7 @@ class Powerschool
   get :district, :ws, '/district'
   get :schools, :ws, '/district/school'
   get :teachers, :ws, '/staff'
+  get :student, :ws, '/student/:student_id'
   get :students, :ws, '/student'
   get :school_teachers, :ws, '/school/:school_id/staff'
   get :school_students, :ws, '/school/:school_id/student'
