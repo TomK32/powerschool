@@ -144,7 +144,7 @@ class Powerschool
       end
     end
     # now filter again for the start date and if there isn't one matching we have to return the most recent one
-    in_two_weeks = (Date.parse(today) - 2.weeks).to_s(:db)
+    in_two_weeks = (Date.parse(today) + 2.weeks).to_s(:db)
     active_terms = terms.select{|term| term['start_date'] <= in_two_weeks }
     if active_terms.any?
       return active_terms
