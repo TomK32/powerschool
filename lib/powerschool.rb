@@ -9,7 +9,8 @@ class Powerschool
   attr_accessor :metadata
   API_PATHS = {
     ws: '/ws/v1',
-    ptg: '/powerschool-ptg-api/v2/'
+    ptg: '/powerschool-ptg-api/v2/',
+    xte: '/ws/xte'
   }
 
 
@@ -109,10 +110,15 @@ class Powerschool
   get :school_terms, :ws, '/school/:school_id/term'
   get :section_enrollment, :ws, '/section/:section_id/section_enrollment'
 
+  # PowerTeacher Gradebook (pre Powerschool 10)
   get :assignment, :ptg, 'assignment/:id'
   post :post_section_assignment, :ptg, '/section/:section_id/assignment'
   put :put_assignment_scores, :ptg, '/assignment/:assignment_id/score'
   put :put_assignment_score, :ptg, '/assignment/:assignment_id/student/:student_id/score'
+
+  # PowerTeacher Pro
+  post :xte_post_section_assignment, :xte, '/section/assignment'
+  put :xte_put_assignment_scores, :xte, '/score'
 
   get :metadata, :ws, '/metadata'
   get :areas, '/ws/schema/area'
