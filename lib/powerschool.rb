@@ -126,6 +126,8 @@ class Powerschool
   get :table_metadata, '/ws/schema/table/:table/metadata'
   get :area_table, '/ws/schema/area/:area/table'
 
+  get :queries, '/ws/schema/query/api'
+
 
   def start_year
     offset = Date.today.month < 8 ? -1 : 0
