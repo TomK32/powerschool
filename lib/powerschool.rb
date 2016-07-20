@@ -37,7 +37,7 @@ class Powerschool
   def prepare_path(path, api, options)
     options = options.dup
     options.each_pair do |key, value|
-      regexp_path_option = /(:#{key}$|:#{key}([:\/-_]))/
+      regexp_path_option = /(:#{key}$|:#{key}([:&\/-_]))/
       if path.match(regexp_path_option)
         if value.blank?
           raise "Blank value for parameter '%s' in '%s'" % [key, path]
