@@ -120,6 +120,8 @@ class Powerschool
   # PowerTeacher Pro
   post :xte_post_section_assignment, :xte, '/section/assignment?users_dcid=:teacher_id'
   put :xte_put_assignment_scores, :xte, '/score'
+  get :xte_section_assignments, :xte, '/section/assignment?users_dcid=:teacher_id&section_ids=:section_id'
+  get :xte_section_assignment, :xte, '/section/assignment/:assignment_id?users_dcid=:teacher_id'
   get :xte_teacher_category, :xte, '/teacher_category'
 
   get :metadata, :ws, '/metadata'
