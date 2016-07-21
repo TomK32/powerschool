@@ -83,7 +83,8 @@ class Powerschool
       if results.is_a?(Hash)
         plural = results.keys.first
         results = results[plural][plural.singularize] || []
-
+      end
+      if results.is_a?(Hash)
         # a rare(?) case has been observed where (in this case section_enrollment) did return a single
         # data object as a hash rather than as a hash inside an array
         results = [results]
