@@ -135,7 +135,7 @@ class Powerschool
 
 
   def start_year
-    offset = Date.today.month < 8 ? -1 : 0
+    offset = Date.today.month <= 6 ? -1 : 0
     year = self.client.api_credentials['start_year'] || (Date.today.year + offset)
   end
 
