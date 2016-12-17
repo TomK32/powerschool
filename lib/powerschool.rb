@@ -18,8 +18,10 @@ class Powerschool
     self.client = Class.new(Powerschool::Client) do |klass|
       uri = api_credentials['base_uri'] || Powerschool::Client::BASE_URI
       klass.base_uri(uri)
-      if options[:connection_adaptor]
-        klass.connection_adaptor nil, options[:connection_adaptor]
+
+      # options like `verify: false` (to disable ssl verification)
+      options.each do |k, v|
+        default_options.update({k => v})
       end
     end.new(api_credentials)
   end
