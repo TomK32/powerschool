@@ -14,11 +14,11 @@ class Powerschool
   }
 
 
-  def initialize(api_credentials)
+  def initialize(api_credentials, options = {})
     self.client = Class.new(Powerschool::Client) do |klass|
       uri = api_credentials['base_uri'] || Powerschool::Client::BASE_URI
       klass.base_uri(uri)
-    end.new(api_credentials)
+    end.new(api_credentials, options)
   end
 
   class << self
