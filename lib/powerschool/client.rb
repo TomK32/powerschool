@@ -1,5 +1,7 @@
 class Powerschool
   class Client
+    class AuthenticationError < RuntimeError
+    end
     include HTTParty
 
     VERSION = '0.2'
@@ -14,7 +16,7 @@ class Powerschool
     def initialize(api_credentials, options = {})
       @api_credentials = api_credentials
       if (api_credentials['secret'].blank? || api_credentials['id'].blank?) && api_credentials['access_token'].blank?
-        raise 'Access token or api credentials are required'
+        raise AuthenticationError.new('Access token or api credentials are required')
       end
       @options = {:headers => {'User-Agent' => "Ruby Powerschool #{VERSION}", 'Accept' => 'application/json', 'Content-Type' => 'application/json'}}.merge(options)
     end
@@ -43,7 +45,7 @@ class Powerschool
         @options[:headers].merge!('Authorization' => 'Bearer ' + @api_credentials['access_token'])
         @authenticated = true
       else
-        raise "Could not authenticate: %s -- headers: %s" % [response.inspect, headers]
+        raise AuthenticationError.new("Could not authenticate: %s -- headers: %s" % [response.inspect, headers])
       end
       return @authenticated
     end
